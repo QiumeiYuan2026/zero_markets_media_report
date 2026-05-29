@@ -1,0 +1,393 @@
+
+<style>
+*{box-sizing:border-box;}
+.rpt-outer{width:100%;padding:1.5rem 1rem;background:transparent;}
+.rpt-inner{max-width:1024px;margin:0 auto;font-family:var(--font-sans);}
+.rpt-title{font-size:22px;font-weight:500;color:var(--color-text-primary);margin:0 0 4px;}
+.rpt-desc{font-size:14px;color:var(--color-text-secondary);margin:0 0 1.25rem;}
+.rpt-head{margin-bottom:2rem;border-bottom:1px solid var(--color-border-tertiary);padding-bottom:1.5rem;}
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.kpi{background:#f5f5f3;border-radius:8px;padding:.85rem 1rem;}
+.kpi-label{font-size:11px;color:#888;margin:0 0 3px;text-transform:uppercase;letter-spacing:.04em;}
+.kpi-val{font-size:20px;font-weight:500;color:var(--color-text-primary);margin:0;}
+.sec-label{font-size:12px;font-weight:500;color:var(--color-text-secondary);letter-spacing:.06em;text-transform:uppercase;margin:2rem 0 .75rem;display:flex;align-items:center;gap:6px;}
+.sec-label i{font-size:15px;}
+
+/* Platform card */
+.pcard{border:1px solid #e0ddd6;border-radius:12px;margin-bottom:12px;overflow:hidden;background:#fff;}
+.pcard-hd{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem;cursor:pointer;gap:12px;transition:background .15s;}
+.pcard-hd:hover{background:#fafaf8;}
+.pcard-left{display:flex;align-items:center;gap:12px;flex:1;min-width:0;}
+.pcard-num{width:28px;height:28px;border-radius:50%;background:#dbeafe;color:#1e40af;font-size:13px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.pcard-name{font-size:15px;font-weight:500;color:var(--color-text-primary);margin:0;}
+.pcard-type{font-size:12px;color:#888;margin:1px 0 0;}
+.pcard-right{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.sbadge{font-size:11px;padding:3px 10px;border-radius:20px;font-weight:500;white-space:nowrap;display:inline-flex;align-items:center;gap:4px;}
+.sbadge-blue{background:#dbeafe;color:#1e3a8a;}
+.sbadge-amber{background:#fef3c7;color:#92400e;}
+.chevron{font-size:16px;color:#aaa;transition:transform .2s;}
+.chevron.open{transform:rotate(180deg);}
+.pcard-body{display:none;padding:0 1.25rem 1.25rem;}
+.pcard-body.open{display:block;}
+
+/* Field grid */
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+.fb{background:#f7f6f3;border:1px solid #e5e3dc;border-radius:8px;padding:.85rem 1rem;}
+.fb.full{grid-column:1/-1;}
+.fb-label{font-size:11px;color:#999;font-weight:500;text-transform:uppercase;letter-spacing:.04em;margin:0 0 6px;display:flex;align-items:center;gap:5px;}
+.fb-label i{font-size:13px;}
+.fb-val{font-size:13px;color:var(--color-text-primary);line-height:1.7;margin:0;white-space:pre-wrap;word-break:break-word;}
+.fb-val a{color:#2563eb;}
+
+/* Price table */
+.ptable{width:100%;border-collapse:collapse;margin-top:4px;}
+.ptable tr{border-bottom:1px solid #e5e3dc;}
+.ptable tr:last-child{border-bottom:none;}
+.ptable td{padding:6px 0;font-size:12.5px;vertical-align:top;}
+.ptable td:first-child{color:#666;padding-right:12px;}
+.ptable td:last-child{color:var(--color-text-primary);font-weight:500;text-align:right;white-space:nowrap;}
+.kit-link{font-size:12px;color:#2563eb;display:block;margin-top:8px;word-break:break-all;}
+
+/* Progress row */
+.prog{display:flex;align-items:flex-start;gap:8px;padding:.75rem 1rem;border-radius:8px;border:1px solid #e0ddd6;margin-top:10px;background:#fafaf8;}
+.prog i{font-size:16px;margin-top:1px;flex-shrink:0;}
+.prog-txt{font-size:13px;color:var(--color-text-primary);line-height:1.6;}
+.prog-txt strong{font-weight:500;}
+
+/* Pending */
+.pending-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:8px;margin-top:.75rem;}
+.ppill{background:#f5f5f3;border:1px solid #e0ddd6;border-radius:8px;padding:9px 12px;display:flex;align-items:center;gap:7px;}
+.ppill i{font-size:14px;color:#bbb;flex-shrink:0;}
+.ppill-name{font-size:13px;color:var(--color-text-primary);}
+.ppill-type{font-size:11px;color:#aaa;margin:1px 0 0;}
+
+@media(max-width:600px){
+  .kpi-row{grid-template-columns:repeat(2,1fr);}
+  .fg{grid-template-columns:1fr;}
+  .fb.full{grid-column:1;}
+  .sbadge{display:none;}
+}
+</style>
+
+<div class="rpt-outer">
+<div class="rpt-inner">
+
+  <div class="rpt-head">
+    <h1 class="rpt-title"><i class="ti ti-world" aria-hidden="true" style="font-size:20px;vertical-align:-2px;margin-right:6px;"></i>全球主流媒体调研报告</h1>
+    <p class="rpt-desc">Zero Markets · 媒体合作调研追踪 · 覆盖行业媒体、资讯平台与评测渠道</p>
+    <div class="kpi-row">
+      <div class="kpi"><p class="kpi-label">已详细调研</p><p class="kpi-val">5 家</p></div>
+      <div class="kpi"><p class="kpi-label">暂未调研</p><p class="kpi-val">19 家</p></div>
+      <div class="kpi"><p class="kpi-label">已发送沟通邮件</p><p class="kpi-val">4 家</p></div>
+      <div class="kpi"><p class="kpi-label">平台总覆盖</p><p class="kpi-val">24 家</p></div>
+    </div>
+  </div>
+
+  <div class="sec-label"><i class="ti ti-checkup-list" aria-hidden="true"></i>已调研平台详情 <span style="font-weight:400;color:#bbb;margin-left:4px;">点击展开查看完整调研内容</span></div>
+
+  <!-- 1 FXStreet -->
+  <div class="pcard">
+    <div class="pcard-hd" onclick="tog(0)">
+      <div class="pcard-left">
+        <div class="pcard-num">1</div>
+        <div><p class="pcard-name">FX Street</p><p class="pcard-type">行业媒体 / 资讯平台</p></div>
+      </div>
+      <div class="pcard-right">
+        <span class="sbadge sbadge-blue"><i class="ti ti-mail" style="font-size:11px;" aria-hidden="true"></i>已发送邮件</span>
+        <i class="ti ti-chevron-down chevron" id="c0" aria-hidden="true"></i>
+      </div>
+    </div>
+    <div class="pcard-body" id="b0">
+      <div class="fg">
+        <div class="fb full">
+          <p class="fb-label"><i class="ti ti-building" aria-hidden="true"></i>行业地位</p>
+          <p class="fb-val">面向外汇交易者和投资者的综合性财经资讯和交易平台。全球在线外汇新闻、行情、分析和教育资源平台；覆盖货币对、贵金属（黄金）、主要指数及部分加密货币的实时市场信息。</p>
+        </div>
+        <div class="fb">
+          <p class="fb-label"><i class="ti ti-chart-bar" aria-hidden="true"></i>流量指标</p>
+          <p class="fb-val">域名权重：79
+Trustpilot 评分：4.7
+月均访问：250 万交易者
+月页面浏览量：超 800 万</p>
+        </div>
+        <div class="fb">
+          <p class="fb-label"><i class="ti ti-map-pin" aria-hidden="true"></i>核心受众市场</p>
+          <p class="fb-val">美国、印度、英国、巴基斯坦、加拿大、澳大利亚、南非、阿联酋、新加坡、马来西亚</p>
+        </div>
+        <div class="fb full">
+          <p class="fb-label"><i class="ti ti-currency-dollar" aria-hidden="true"></i>合作方式及价格</p>
+          <table class="ptable">
+            <tr><td>Broker Listing</td><td>€3,200 / 月</td></tr>
+            <tr><td>Broker Review</td><td>€18,000 / 月</td></tr>
+            <tr><td>全站品牌曝光（全球 10% SOV）</td><td>€23,100 / 月</td></tr>
+            <tr><td>新闻稿发布</td><td>€650 / 篇</td></tr>
+            <tr><td>赞助文章</td><td>€1,000 / 篇</td></tr>
+            <tr><td>社媒推广（图文）</td><td>€500 / 帖</td></tr>
+            <tr><td>YouTube 推广</td><td>€1,500 / 视频</td></tr>
+            <tr><td>邮件群发</td><td>€0.15 / 订阅用户</td></tr>
+            <tr><td>2026年最佳经纪商 / Telegram / WhatsApp</td><td>待沟通确认</td></tr>
+          </table>
+          <a class="kit-link" href="https://editorial.fxsstatic.com/pdfs/fxstreet-media-kit.pdf" target="_blank"><i class="ti ti-file-text" style="font-size:12px;vertical-align:-1px;margin-right:3px;" aria-hidden="true"></i>Media Kit → fxstreet-media-kit.pdf</a>
+        </div>
+        <div class="fb">
+          <p class="fb-label"><i class="ti ti-trending-up" aria-hidden="true"></i>SEO / GEO 营销价值</p>
+          <p class="fb-val">极高。能在散户心中建立高频、长期的技术派专业形象，有效冲淡零星负面评价。</p>
+        </div>
+        <div class="fb">
+          <p class="fb-label"><i class="ti ti-alert-circle" aria-hidden="true"></i>合作要求 / 限制</p>
+          <p class="fb-val">待沟通回复后确认</p>
+        </div>
+        <div class="fb full">
+          <p class="fb-label"><i class="ti ti-target" aria-hidden="true"></i>Zero Markets 适合投放的内容方向</p>
+          <p class="fb-val">待沟通回复后确认</p>
+        </div>
+      </div>
+      <div class="prog">
+        <i class="ti ti-mail-forward" style="color:#2563eb;" aria-hidden="true"></i>
+        <p class="prog-txt"><strong>跟进进度：</strong>已发送沟通邮件至 <strong>contact@financialmarkets.media</strong>，等待回复中。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2 Finance Magnates -->
+  <div class="pcard">
+    <div class="pcard-hd" onclick="tog(1)">
+      <div class="pcard-left">
+        <div class="pcard-num">2</div>
+        <div><p class="pcard-name">Finance Magnates</p><p class="pcard-type">行业媒体 / 资讯平台</p></div>
+      </div>
+      <div class="pcard-right">
+        <span class="sbadge sbadge-blue"><i class="ti ti-mail" style="font-size:11px;" aria-hidden="true"></i>已发送邮件</span>
+        <i class="ti ti-chevron-down chevron" id="c1" aria-hidden="true"></i>
+      </div>
+    </div>
+    <div class="pcard-body" id="b1">
+      <div class="fg">
+        <div class="fb full">
+          <p class="fb-label"><i class="ti ti-building" aria-hidden="true"></i>行业地位</p>
+          <p class="fb-val">金融服务行业新闻、研究和分析领域领先的在线来源。专注于在线交易、金融科技和加密货币，致力于提供前沿的行业洞察和高价值资源，为全球企业及专业人士赋能。</p>
+        </div>
+        <div class="fb">
+          <p class="fb-label"><i class="ti ti-chart-bar" aria-hidden="true"></i>流量指标（2025 Q4）</p>
+          <p class="fb-val">网站用户数：89 万
+网站访问量：120 万
+平均停留时长：2 分 23 秒</p>
+        </div>
+        <div class="fb">
+          <p class="fb-label"><i class="ti ti-map-pin" aria-hidden="true"></i>核心受众市场</p>
+          <p class="fb-val">美国、英国、新加坡、澳大利亚、加拿大、印度</p>
+        </div>
+        <div class="fb full">
+          <p class="fb-label"><i class="ti ti-currency-dollar" aria-hidden="true"></i>合作方式（具体报价待回复）</p>
+          <p class="fb-val">SEO 列表与专业评测 · Thought Leadership PR新闻稿 · Evergreen Content 品牌推广稿 · Video Reviews 视频评测 · 高管访谈与播客 · Finance Magnates Awards · Intelligence Report Full-Page Ad · Webinars · Display Ads · Surveys Reports & Data · FM 行业情报平台 · Finance Magnates Academy</p>
+          <a class="kit-link" href="https://drive.google.com/file/d/1-EhUpWBmMLAoxBqX8_asS0ndFTGW8c76/view" target="_blank"><i class="ti ti-file-text" style="font-size:12px;vertical-align:-1px;margin-right:3px;" aria-hidden="true"></i>Media Kit → 查看文档</a>
+        </div>
+        <div class="fb full">
+          <p class="fb-label"><i class="ti ti-trending-up" aria-hidden="true"></i>SEO / GEO 营销价值</p>
+          <p class="fb-val">凭借高域名权重和官方数据认证（FM Data Lab），能为品牌注入强力的传统 SEO 外链，并成为 AI 搜索（GEO）提炼"硬核事实"的权威数据源。</p>
+        </div>
+      </div>
+      <div class="prog">
+        <i class="ti ti-mail-forward" style="color:#2563eb;" aria-hidden="true"></i>
+        <p class="prog-txt"><strong>跟进进度：</strong>已发送沟通邮件至 <strong>minna.k@ultimate.group</strong>，对方反馈下周给到具体报价。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3 InvestingLive -->
+  <div class="pcard">
+    <div class="pcard-hd" onclick="tog(2)">
+      <div class="pcard-left">
+        <div class="pcard-num">3</div>
+        <div><p class="pcard-name">InvestingLive</p><p class="pcard-type">行业媒体 / 资讯平台（原 ForexLive）</p></div>
+      </div>
+      <div class="pcard-right">
+        <span class="sbadge sbadge-blue"><i class="ti ti-mail" style="font-size:11px;" aria-hidden="true"></i>已发送邮件</span>
+        <i class="ti ti-chevron-down chevron" id="c2" aria-hidden="true"></i>
+      </div>
+    </div>
+    <div class="pcard-body" id="b2">
+      <div class="fg">
+        <div class="fb full">
+          <p class="fb-label"><i class="ti ti-building" aria-hidden="true"></i>行业地位</p>
+          <p class="fb-val">领先的实时市场新闻与分析平台，承袭自全球著名零售外汇快讯门户 ForexLive 的深厚底蕴。全面覆盖外汇、股票、大宗商品和全球宏观市场，提供极速可靠的即时资讯，全天候实时洞察市场走势。</p>
+        </div>
+        <div class="fb">
+          <p class="fb-label"><i class="ti ti-chart-bar" aria-hidden="true"></i>流量指标（2025 Q4）</p>
+          <p class="fb-val">独立用户数：120 万
+网站访问量：260 万
+平均停留时长：3 分 41 秒</p>
+        </div>
+        <div class="fb">
+          <p class="fb-label"><i class="ti ti-map-pin" aria-hidden="true"></i>核心受众市场</p>
+          <p class="fb-val">美国、印度、南非、加拿大、澳大利亚、马来西亚、英国、新加坡、荷兰、阿联酋</p>
+        </div>
+        <div class="fb full">
+          <p class="fb-label"><i class="ti ti-currency-dollar" aria-hidden="true"></i>合作方式</p>
+          <p class="fb-val">Thought Leadership PR新闻稿 · Evergreen Content · Video Reviews · 高管访谈与播客 · 智能罗盘交易系统（tradeCompass RSS）· Broker Listing / Profile / Review / Comparison Page · 品牌 Logo 植入 RSS 新闻源 · 交易平台内置 RSS 订阅源集成 · Webinars · Display Ads · investingLive 学院 · Live Workshop Sponsorship
+⚠️ 注：Video Publications 效果不佳</p>
+          <a class="kit-link" href="https://drive.google.com/file/d/1qn_5XZ1Dlf5xBmlP2EGjvmFYkLbz0zjb/view" target="_blank"><i class="ti ti-file-text" style="font-size:12px;vertical-align:-1px;margin-right:3px;" aria-hidden="true"></i>Media Kit → 查看文档</a>
+        </div>
+        <div class="fb full">
+          <p class="fb-label"><i class="ti ti-trending-up" aria-hidden="true"></i>SEO / GEO 营销价值</p>
+          <p class="fb-val">通过秒级索引的实时宏观快讯与庞大的 RSS 订阅生态，能够强势拦截时效性 AI 检索，并为品牌在全球高频交易员圈层中带来海量长尾零售流量。</p>
+        </div>
+      </div>
+      <div class="prog">
+        <i class="ti ti-mail-forward" style="color:#2563eb;" aria-hidden="true"></i>
+        <p class="prog-txt"><strong>跟进进度：</strong>已发送沟通邮件至 <strong>minna.k@ultimate.group</strong>，等待回复中。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4 Investing.com -->
+  <div class="pcard">
+    <div class="pcard-hd" onclick="tog(3)">
+      <div class="pcard-left">
+        <div class="pcard-num">4</div>
+        <div><p class="pcard-name">Investing.com</p><p class="pcard-type">行业媒体 / 资讯平台</p></div>
+      </div>
+      <div class="pcard-right">
+        <span class="sbadge sbadge-amber"><i class="ti ti-clock" style="font-size:11px;" aria-hidden="true"></i>官网留言等待中</span>
+        <i class="ti ti-chevron-down chevron" id="c3" aria-hidden="true"></i>
+      </div>
+    </div>
+    <div class="pcard-body" id="b3">
+      <div class="fg">
+        <div class="fb full">
+          <p class="fb-label"><i class="ti ti-building" aria-hidden="true"></i>行业地位</p>
+          <p class="fb-val">凭借每月数十亿网页浏览量的数百万高参与度全球用户，Investing.com 已成为获取全面金融洞察和多市场专业知识的首选目的地。</p>
+        </div>
+        <div class="fb">
+          <p class="fb-label"><i class="ti ti-chart-bar" aria-hidden="true"></i>流量指标</p>
+          <p class="fb-val">独立用户数：4,500 万
+月度总访问量：4.58 亿
+月度网页浏览量：35 亿
+平均停留时长：9 分钟</p>
+        </div>
+        <div class="fb">
+          <p class="fb-label"><i class="ti ti-map-pin" aria-hidden="true"></i>核心受众市场</p>
+          <p class="fb-val">美国、印度、南非、加拿大、澳大利亚、马来西亚、英国、新加坡、荷兰、阿联酋</p>
+        </div>
+        <div class="fb full">
+          <p class="fb-label"><i class="ti ti-currency-dollar" aria-hidden="true"></i>合作方式</p>
+          <p class="fb-val">Display（网页 & 手机）· Directory（右侧简介 / 品牌列表 / 寻找经纪人按钮 / SEO提升）· Performance（手机页面 CTA）· Video（每日视频市场分析 + 内容展示前视频）· Content：Branded Content / Branded Section / Content Analysis</p>
+          <a class="kit-link" href="https://www.investingmediakit.com/en/home/a/main/" target="_blank"><i class="ti ti-file-text" style="font-size:12px;vertical-align:-1px;margin-right:3px;" aria-hidden="true"></i>Media Kit → investingmediakit.com</a>
+        </div>
+        <div class="fb full">
+          <p class="fb-label"><i class="ti ti-trending-up" aria-hidden="true"></i>SEO / GEO 营销价值</p>
+          <p class="fb-val">传统 SEO：域名权威度 DR 90+，月均 35 亿页面浏览量，在 Google 搜索中长期垄断外汇、差价合约及全球宏观经济词条前排，Do-follow 高权重外链对券商官网产生强烈权重反哺。
+GEO：内容结构化程度极高（行情看板、点差对比表），是 LLM 与实时 AI 搜索（Perplexity、Google Overviews）的核心授信语料库，AI 高概率抓取页面沉淀的经纪商"硬事实"（最低点差、合规牌照）。</p>
+        </div>
+      </div>
+      <div class="prog">
+        <i class="ti ti-message" style="color:#d97706;" aria-hidden="true"></i>
+        <p class="prog-txt"><strong>跟进进度：</strong>已通过官网页面留言，等待对方主动联系沟通。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5 Traders Union -->
+  <div class="pcard">
+    <div class="pcard-hd" onclick="tog(4)">
+      <div class="pcard-left">
+        <div class="pcard-num">5</div>
+        <div><p class="pcard-name">Traders Union</p><p class="pcard-type">交易商评测 / 口碑管理平台</p></div>
+      </div>
+      <div class="pcard-right">
+        <span class="sbadge sbadge-blue"><i class="ti ti-mail" style="font-size:11px;" aria-hidden="true"></i>已回复邮件跟进中</span>
+        <i class="ti ti-chevron-down chevron" id="c4" aria-hidden="true"></i>
+      </div>
+    </div>
+    <div class="pcard-body" id="b4">
+      <div class="fg">
+        <div class="fb full">
+          <p class="fb-label"><i class="ti ti-building" aria-hidden="true"></i>平台性质</p>
+          <p class="fb-val">面向零售交易者的国际交易资讯及经纪商评测平台，主要提供外汇/CFD经纪商排名、评论、交易条件对比及市场分析内容。在行业垂直搜索和经纪商评测领域有一定曝光度，偏向经纪商评测、SEO流量和商业推广型平台。</p>
+        </div>
+        <div class="fb">
+          <p class="fb-label"><i class="ti ti-chart-bar" aria-hidden="true"></i>流量指标</p>
+          <p class="fb-val">月均服务客户：100 万+
+谷歌自然搜索流量：88%（外汇/加密领域）
+活跃交易员社群：30 万+
+月流量：80 万–100 万+
+平均停留：3 分钟
+语言版本：30 个</p>
+        </div>
+        <div class="fb">
+          <p class="fb-label"><i class="ti ti-map-pin" aria-hidden="true"></i>受众分布</p>
+          <p class="fb-val">欧洲、北美、亚洲、南美、非洲</p>
+        </div>
+        <div class="fb full">
+          <p class="fb-label"><i class="ti ti-currency-dollar" aria-hidden="true"></i>合作方式及价格</p>
+          <table class="ptable">
+            <tr><td>TU 信任分数</td><td>$1,500 / 月</td></tr>
+            <tr><td>全站横幅广告（约100万次展示/月）</td><td>$20,000 / 月</td></tr>
+            <tr><td>首页核心横幅（10万次展示/月）</td><td>$6,000 / 月 | 3个月 $15,000</td></tr>
+            <tr><td>弹窗横幅（65–100万次展示/月）</td><td>$15,000 / 月</td></tr>
+            <tr><td>文章/预测页面横幅（5万次/月）</td><td>$4,000 / 月 | 3个月 $10,000</td></tr>
+            <tr><td>经纪商评测页面横幅（3万次/月）</td><td>$3,000 / 月 | 3个月 $7,500</td></tr>
+            <tr><td>首页 Logo 推荐位（页面底部）</td><td>$1,900 / 月</td></tr>
+            <tr><td>Reputation Boost 套餐（首页横幅+官方主页+公关经理）</td><td>首月 $6,350，次月起 $5,350/月</td></tr>
+            <tr><td>Maximum Visibility 套餐（新闻稿+社媒+排行榜置顶）</td><td>$1,990 / 月</td></tr>
+            <tr><td>谷歌新闻推广</td><td>$940/篇 | 3篇 $2,090</td></tr>
+            <tr><td>SEO 链接植入</td><td>1链 $700 | 2链 $1,500 | 3链 $1,900</td></tr>
+            <tr><td>关键词优化文章</td><td>1篇 $2,500 | 2篇 $4,500 | 3篇 $6,000</td></tr>
+            <tr><td>新闻稿 + 社媒分发</td><td>1篇 $1,500 | 2篇 $2,600 | 3篇 $3,400</td></tr>
+            <tr><td>视频评测 / 访谈 / Explainer</td><td>$3,000</td></tr>
+            <tr><td>个人公关经理（含15%折扣+差评保护+月度新闻稿）</td><td>$990 / 月</td></tr>
+            <tr><td>公司简介页</td><td>$4,000 | 扩展版 $2,500</td></tr>
+          </table>
+          <p style="font-size:12px;color:#aaa;margin:8px 0 0;">Media Kit 文档已通过邮件下载获取</p>
+        </div>
+        <div class="fb full">
+          <p class="fb-label"><i class="ti ti-bulb" aria-hidden="true"></i>建议合作方案</p>
+          <p class="fb-val">① 基础公关支持服务：$990/月（用于口碑维护和拦截差评）
+② 横幅广告定向全球投放：$15,000
+③ SEO 优化文章深耕（额外3篇）：每篇 $940
+④ 提升券商排名核心指标：$5,000/月</p>
+        </div>
+      </div>
+      <div class="prog">
+        <i class="ti ti-messages" style="color:#2563eb;" aria-hidden="true"></i>
+        <p class="prog-txt"><strong>跟进进度：</strong>已回复邮件跟进，联系人 <strong>max.n@tradersunion.com</strong>。待确认：覆盖国家范围、账户类型评分机制（与推广费挂钩）、负面评论处理方式（$990/月）。页面基础信息可免费更新。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pending -->
+  <div style="margin-top:2rem;">
+    <div class="sec-label"><i class="ti ti-clock-pause" aria-hidden="true"></i>暂未调研平台 <span style="font-weight:400;color:#bbb;margin-left:4px;">以下平台列入后续调研规划</span></div>
+    <div class="pending-grid">
+      <div class="ppill"><i class="ti ti-clock" aria-hidden="true"></i><div><div class="ppill-name">DailyFX</div><div class="ppill-type">行业媒体</div></div></div>
+      <div class="ppill"><i class="ti ti-clock" aria-hidden="true"></i><div><div class="ppill-name">BabyPips</div><div class="ppill-type">行业媒体</div></div></div>
+      <div class="ppill"><i class="ti ti-clock" aria-hidden="true"></i><div><div class="ppill-name">LeapRate</div><div class="ppill-type">行业媒体</div></div></div>
+      <div class="ppill"><i class="ti ti-clock" aria-hidden="true"></i><div><div class="ppill-name">FX News Group</div><div class="ppill-type">行业媒体</div></div></div>
+      <div class="ppill"><i class="ti ti-clock" aria-hidden="true"></i><div><div class="ppill-name">TradingView</div><div class="ppill-type">行业媒体</div></div></div>
+      <div class="ppill"><i class="ti ti-clock" aria-hidden="true"></i><div><div class="ppill-name">Trustpilot</div><div class="ppill-type">评测平台</div></div></div>
+      <div class="ppill"><i class="ti ti-clock" aria-hidden="true"></i><div><div class="ppill-name">Myfxbook</div><div class="ppill-type">评测平台</div></div></div>
+      <div class="ppill"><i class="ti ti-clock" aria-hidden="true"></i><div><div class="ppill-name">Forex Peace Army</div><div class="ppill-type">评测平台</div></div></div>
+      <div class="ppill"><i class="ti ti-clock" aria-hidden="true"></i><div><div class="ppill-name">FXBlue</div><div class="ppill-type">评测平台</div></div></div>
+      <div class="ppill"><i class="ti ti-clock" aria-hidden="true"></i><div><div class="ppill-name">Reddit</div><div class="ppill-type">社区曝光</div></div></div>
+      <div class="ppill"><i class="ti ti-clock" aria-hidden="true"></i><div><div class="ppill-name">Discord</div><div class="ppill-type">社区曝光</div></div></div>
+      <div class="ppill"><i class="ti ti-clock" aria-hidden="true"></i><div><div class="ppill-name">PR Newswire</div><div class="ppill-type">新闻稿分发</div></div></div>
+      <div class="ppill"><i class="ti ti-clock" aria-hidden="true"></i><div><div class="ppill-name">Business Wire</div><div class="ppill-type">新闻稿分发</div></div></div>
+      <div class="ppill"><i class="ti ti-clock" aria-hidden="true"></i><div><div class="ppill-name">Bloomberg</div><div class="ppill-type">财经媒体</div></div></div>
+      <div class="ppill"><i class="ti ti-clock" aria-hidden="true"></i><div><div class="ppill-name">Reuters</div><div class="ppill-type">财经媒体</div></div></div>
+      <div class="ppill"><i class="ti ti-clock" aria-hidden="true"></i><div><div class="ppill-name">CNBC</div><div class="ppill-type">财经媒体</div></div></div>
+      <div class="ppill"><i class="ti ti-clock" aria-hidden="true"></i><div><div class="ppill-name">Financial Times</div><div class="ppill-type">财经媒体</div></div></div>
+      <div class="ppill"><i class="ti ti-clock" aria-hidden="true"></i><div><div class="ppill-name">Yahoo Finance</div><div class="ppill-type">财经媒体</div></div></div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<script>
+function tog(i){
+  var b=document.getElementById('b'+i);
+  var c=document.getElementById('c'+i);
+  var open=b.classList.toggle('open');
+  if(open)c.classList.add('open');else c.classList.remove('open');
+}
+</script>
